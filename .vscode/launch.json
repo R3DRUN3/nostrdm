@@ -8,11 +8,18 @@
       "program": "${workspaceFolder}/target/debug/nostrdm",
       "args": [
         "--nsec",
-        "nsec_key_here",
+        "nsec_here",
         "--npub",
-        "npub_key_here",
-        "--dm-relay",
-        "wss://nos.lol"
+        "npub_here",
+          "--dm-relay", "wss://inbox.nostr.wine",
+          "--dm-relay", "wss://relay.damus.io",
+          "--dm-relay", "wss://nos.lol",
+          "--dm-relay", "wss://nostr.mom",
+          "--write-relay", "wss://nos.lol",
+          "--write-relay", "wss://nostr.mom",
+          "--write-relay", "wss://relay.damus.io",
+          "--read-relay", "wss://inbox.nostr.wine",
+          "--read-relay", "wss://nostr.mom"
       ],
       "cwd": "${workspaceFolder}",
       "env": {
