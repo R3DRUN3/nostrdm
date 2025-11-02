@@ -1,0 +1,28 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug nostrdm",
+      "type": "lldb",
+      "request": "launch",
+      "program": "${workspaceFolder}/target/debug/nostrdm",
+      "args": [
+        "--nsec",
+        "nsec_key_here",
+        "--npub",
+        "npub_key_here",
+        "--dm-relay",
+        "wss://nos.lol"
+      ],
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "RUST_LOG": "debug"
+      },
+      "sourceLanguages": [
+        "rust"
+      ],
+      "preLaunchTask": "cargo build",
+      "console": "integratedTerminal"
+    }
+  ]
+}

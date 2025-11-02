@@ -1,0 +1,24 @@
+[package]
+name = "nostrdm"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+anyhow = "1"
+thiserror = "1"
+
+# Pinned Tokio to correct version for your system (1.39 was outdated)
+tokio = { version = "1.48", features = ["macros", "rt-multi-thread", "signal", "io-std"] }
+
+clap = { version = "4.5", features = ["derive"] }
+rpassword = "7"
+
+# ---- NOSTR STACK (PINNED) ----
+nostr-sdk = { version = "=0.43.0", features = ["nip44", "nip59"] }
+nostr = "=0.43.1"
+
+futures = "0.3"
+
+# ---- UI Layer ----
+colored = "2"
+chrono = { version = "0.4", default-features = false, features = ["clock"] }
