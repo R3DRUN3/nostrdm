@@ -99,4 +99,9 @@ If you want to debug this in VSCode, simply modify `--nsec`, `--npub` and `--dm-
 
 ### Demo
 
-The following video showcase a live interaction between a nostrdm user (on ther right) and an Amethyst user (on the left):  
+The following video showcase a live interaction between a nostrdm user (on the left and an Amethyst user (on the right):  
+
+
+https://github.com/user-attachments/assets/f7ffc6ac-6a2c-4bff-89eb-98d06b400673
+
+
