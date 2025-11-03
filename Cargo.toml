@@ -22,3 +22,11 @@ futures = "0.3"
 # ---- UI Layer ----
 colored = "2"
 chrono = { version = "0.4", default-features = false, features = ["clock"] }
+
+#---- Release ----
+[profile.release]
+opt-level = "z"      # Optimize for size
+lto = true           # Enable Link Time Optimization
+codegen-units = 1    # Better optimization, slower compile
+panic = "abort"      # Remove panic unwinding to shrink binary
+strip = true         # (nightly) automatically strip symbols
