@@ -11,7 +11,7 @@
 # Abstract  
 
 
-`Nostrdm` is a lightweight CLI application for end-to-end encrypted, metadata-minimized private messaging over [Nostr]([Nostr](https://github.com/nostr-protocol/nostr)).  
+`Nostrdm` is a lightweight CLI application for end-to-end encrypted, metadata-minimized private messaging over [Nostr](https://github.com/nostr-protocol/nostr).  
 It enables direct, resilient, censorship-resistant 1:1 chat using NIP-17 GiftWrap encrypted messages and optional stealth routing across relays.
 
 > Think: “Telegram DMs without servers, phone numbers, or metadata.”  
@@ -102,7 +102,7 @@ If you want to debug this in VSCode, simply modify `--nsec`, `--npub` and `--dm-
 The following videos showcase live usage.  
 
 
-The first demo showcase an interaction between a nostrdm user (on the left and an Amethyst user (on the right):  
+The first demo showcase an interaction between a nostrdm user (on the left) and an Amethyst user (on the right):  
 
 
 https://github.com/user-attachments/assets/f7ffc6ac-6a2c-4bff-89eb-98d06b400673  
