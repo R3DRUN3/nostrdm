@@ -108,7 +108,13 @@ The first demo showcase an interaction between a nostrdm user (on the left and a
 https://github.com/user-attachments/assets/f7ffc6ac-6a2c-4bff-89eb-98d06b400673  
 
 
-The second demo showcase an interaction between 2 separate sessions of nostrdm:  
+The second demo showcase an interaction between 2 separate nostrdm users:  
+
+
+
+https://github.com/user-attachments/assets/8b295026-f35d-4fbe-ae10-7cdeb9ae4b20
+
+
 
 
 
