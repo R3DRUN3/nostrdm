@@ -1,6 +1,5 @@
 mod cli;
 mod dm;
-mod errors;
 mod keys;
 mod relays;
 
