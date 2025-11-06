@@ -47,5 +47,5 @@ jobs:
         with:
           RUSTTARGET: ${{ matrix.target }}
           ARCHIVE_TYPES: ${{ matrix.archive }}
-          EXTRA_FILES: "README.md LICENSE"
+          EXTRA_FILES: "README.md"
           TOOLCHAIN_VERSION: stable
