@@ -7,24 +7,70 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    name: Build (${{ matrix.target }})
     strategy:
       fail-fast: false
       matrix:
         include:
-          - target: x86_64-unknown-linux-musl
-            archive: tar.gz
-          - target: x86_64-pc-windows-gnu
-            archive: zip
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-musl
+            artifact_suffix: linux-x86_64
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
+            artifact_suffix: windows-x86_64.exe
+          - os: macos-latest
+            target: x86_64-apple-darwin
+            artifact_suffix: macos-x86_64
+
+    runs-on: ${{ matrix.os }}
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Build and upload for ${{ matrix.target }}
-        uses: rust-build/rust-build.action@v1.4.5
+      - name: Install Rust toolchain for target
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+
+      # MUSL support for Linux static build
+      - name: Install MUSL tools (Linux only)
+        if: matrix.target == 'x86_64-unknown-linux-musl'
+        run: sudo apt-get update && sudo apt-get install -y musl-tools
+
+      - name: Build release binary
+        run: cargo build --release --target ${{ matrix.target }}
+
+      - name: Prepare artifact
+        run: |
+          mkdir artifacts
+          BIN_NAME="nostrdm"
+          OUT_NAME="nostrdm-${{ matrix.artifact_suffix }}"
+          if [[ "${{ runner.os }}" == "Windows" ]]; then
+            cp target/${{ matrix.target }}/release/${BIN_NAME}.exe artifacts/${OUT_NAME}
+          else
+            cp target/${{ matrix.target }}/release/${BIN_NAME} artifacts/${OUT_NAME}
+          fi
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact_suffix }}
+          path: artifacts/*
+
+  release:
+    name: Create GitHub Release
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download all build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: ./dist
+
+      - name: Create Release and Upload Assets
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ./dist/**
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          RUSTTARGET: ${{ matrix.target }}
-          ARCHIVE_TYPES: ${{ matrix.archive }}
-          EXTRA_FILES: "README.md LICENSE"
