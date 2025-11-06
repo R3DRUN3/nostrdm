@@ -1,6 +1,6 @@
 # nostrdm  
 
-[![License: Unlicense](https://img.shields.io/badge/license-Unlicense-blue.svg)](http://unlicense.org/) ![Protocol](https://img.shields.io/badge/poweredby-nostr+rust-purple)
+[![License: Unlicense](https://img.shields.io/badge/license-Unlicense-blue.svg)](http://unlicense.org/) ![Protocol](https://img.shields.io/badge/poweredby-nostr+rust-purple) [![Latest Release](https://img.shields.io/github/v/release/r3drun3/nostrdm?logo=github)](https://github.com/r3drun3/nostrdm/releases/latest)
 
 
 <img src="./media/logo.png" alt="nostrdm logo" width="220"/>   
