@@ -14,61 +14,60 @@ jobs:
         include:
           - os: ubuntu-latest
             target: x86_64-unknown-linux-musl
-            artifact_suffix: linux-x86_64
+            artifact_name: nostrdm-linux-x86_64
           - os: windows-latest
             target: x86_64-pc-windows-msvc
-            artifact_suffix: windows-x86_64.exe
+            artifact_name: nostrdm-windows-x86_64.exe
           - os: macos-latest
             target: x86_64-apple-darwin
-            artifact_suffix: macos-x86_64
+            artifact_name: nostrdm-macos-x86_64
 
     runs-on: ${{ matrix.os }}
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Rust toolchain for target
-        uses: dtolnay/rust-toolchain@stable
+      - name: Setup Rust stable
+        uses: actions-rs/toolchain@v1
         with:
+          toolchain: stable
+          override: true
+          components: rustfmt # or add clippy if you want
           targets: ${{ matrix.target }}
 
-      # MUSL support for Linux static build
-      - name: Install MUSL tools (Linux only)
+      - name: Install MUSL tools for Linux
         if: matrix.target == 'x86_64-unknown-linux-musl'
         run: sudo apt-get update && sudo apt-get install -y musl-tools
 
-      - name: Build release binary
+      - name: Build release
         run: cargo build --release --target ${{ matrix.target }}
 
-      - name: Prepare artifact
+      - name: Copy artifact
         run: |
-          mkdir artifacts
-          BIN_NAME="nostrdm"
-          OUT_NAME="nostrdm-${{ matrix.artifact_suffix }}"
+          mkdir -p artifacts
           if [[ "${{ runner.os }}" == "Windows" ]]; then
-            cp target/${{ matrix.target }}/release/${BIN_NAME}.exe artifacts/${OUT_NAME}
+            cp target/${{ matrix.target }}/release/nostrdm.exe artifacts/${{ matrix.artifact_name }}
           else
-            cp target/${{ matrix.target }}/release/${BIN_NAME} artifacts/${OUT_NAME}
+            cp target/${{ matrix.target }}/release/nostrdm artifacts/${{ matrix.artifact_name }}
           fi
 
-      - name: Upload build artifact
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.artifact_suffix }}
-          path: artifacts/*
+          name: ${{ matrix.artifact_name }}
+          path: artifacts/${{ matrix.artifact_name }}
 
-  release:
+  publish:
     name: Create GitHub Release
     needs: build
     runs-on: ubuntu-latest
-
     steps:
-      - name: Download all build artifacts
+      - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
           path: ./dist
 
-      - name: Create Release and Upload Assets
+      - name: Create release and upload binaries
         uses: softprops/action-gh-release@v1
         with:
           files: ./dist/**
