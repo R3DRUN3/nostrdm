@@ -1,6 +1,7 @@
 # nostrdm  
 
-[![License: Unlicense](https://img.shields.io/badge/license-Unlicense-blue.svg)](http://unlicense.org/) ![Protocol](https://img.shields.io/badge/poweredby-nostr+rust-purple) [![Latest Release](https://img.shields.io/github/v/release/r3drun3/nostrdm?logo=github)](https://github.com/r3drun3/nostrdm/releases/latest)
+[![Release](https://github.com/R3DRUN3/nostrdm/actions/workflows/release.yml/badge.svg)](https://github.com/R3DRUN3/nostrdm/actions/workflows/release.yml) [![License: Unlicense](https://img.shields.io/badge/license-Unlicense-blue.svg)](http://unlicense.org/)  
+![Protocol](https://img.shields.io/badge/poweredby-nostr+rust-purple) [![Latest Release](https://img.shields.io/github/v/release/r3drun3/nostrdm?logo=github)](https://github.com/r3drun3/nostrdm/releases/latest)
 
 
 <img src="./media/logo.png" alt="nostrdm logo" width="220"/>   
@@ -39,7 +40,17 @@ Nostrdm is built with a privacy-first architecture using multiple Nostr NIPs for
 ## 🚀 Quick Start
 
 ### **Install**
+You can download the [latest release binary](https://github.com/R3DRUN3/nostrdm/releases), for example:  
 
+
+```bash
+wget https://github.com/R3DRUN3/nostrdm/releases/download/v0.1.0/nostrdm-v0.1.0-linux-x86_64.tar.gz
+tar -xzf nostrdm-v0.1.0-linux-x86_64.tar.gz
+```  
+
+
+
+Or download source code and build locally:  
 ```bash
 git clone https://github.com/r3drun3/nostrdm.git
 cd nostrdm
@@ -51,6 +62,7 @@ Binary will be at:
 ```arduino
 target/release/nostrdm
 ```
+
 
 ---
 
