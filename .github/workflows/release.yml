@@ -6,70 +6,41 @@ on:
       - "v*"
 
 jobs:
+  create-release:
+    name: Create GitHub Release (from tag)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   build:
-    name: Build (${{ matrix.target }})
+    name: Build & Upload (${{ matrix.target }})
+    needs: create-release
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         include:
-          - os: ubuntu-latest
-            target: x86_64-unknown-linux-musl
-            artifact_name: nostrdm-linux-x86_64
-          - os: windows-latest
-            target: x86_64-pc-windows-msvc
-            artifact_name: nostrdm-windows-x86_64.exe
-          - os: macos-latest
-            target: x86_64-apple-darwin
-            artifact_name: nostrdm-macos-x86_64
-
-    runs-on: ${{ matrix.os }}
-
+          - target: x86_64-unknown-linux-musl
+            archive: tar.gz
+          - target: x86_64-pc-windows-gnu
+            archive: zip
+          - target: x86_64-apple-darwin
+            archive: zip
     steps:
       - uses: actions/checkout@v4
-
-      - name: Setup Rust stable
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-          override: true
-          components: rustfmt # or add clippy if you want
-          targets: ${{ matrix.target }}
-
-      - name: Install MUSL tools for Linux
-        if: matrix.target == 'x86_64-unknown-linux-musl'
-        run: sudo apt-get update && sudo apt-get install -y musl-tools
-
-      - name: Build release
-        run: cargo build --release --target ${{ matrix.target }}
-
-      - name: Copy artifact
-        run: |
-          mkdir -p artifacts
-          if [[ "${{ runner.os }}" == "Windows" ]]; then
-            cp target/${{ matrix.target }}/release/nostrdm.exe artifacts/${{ matrix.artifact_name }}
-          else
-            cp target/${{ matrix.target }}/release/nostrdm artifacts/${{ matrix.artifact_name }}
-          fi
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ matrix.artifact_name }}
-          path: artifacts/${{ matrix.artifact_name }}
-
-  publish:
-    name: Create GitHub Release
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download artifacts
-        uses: actions/download-artifact@v4
-        with:
-          path: ./dist
-
-      - name: Create release and upload binaries
-        uses: softprops/action-gh-release@v1
-        with:
-          files: ./dist/**
+      - name: Compile and upload for ${{ matrix.target }}
+        uses: rust-build/rust-build.action@v1.4.5
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          RUSTTARGET: ${{ matrix.target }}
+          ARCHIVE_TYPES: ${{ matrix.archive }}
+          EXTRA_FILES: "README.md LICENSE"
+          TOOLCHAIN_VERSION: stable
